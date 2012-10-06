@@ -2,6 +2,8 @@
 namespace WfkSncSocialAuthDoctrineORM;
 
 use Zend\Mvc\ModuleRouteListener;
+use Zend\Loader\StandardAutoloader;
+use Zend\Loader\AutoloaderFactory;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
@@ -10,15 +12,15 @@ class Module implements ConfigProviderInterface, AutoloaderProviderInterface, Se
 {
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        return include __DIR__ . '/../../config/module.config.php';
     }
 
     public function getAutoloaderConfig()
     {
         return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+            AutoloaderFactory::STANDARD_AUTOLOADER => array(
+                StandardAutoloader::LOAD_NS => array(
+                    __NAMESPACE__ => __DIR__,
                 ),
             ),
         );
