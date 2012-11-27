@@ -5,7 +5,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.4",
-        "socalnick/scn-social-auth": "1.*",
+        "socalnick/scn-social-auth": "1.2.*",
         "zf-commons/zfc-user-doctrine-orm": "dev-master"
     },
     "autoload": {

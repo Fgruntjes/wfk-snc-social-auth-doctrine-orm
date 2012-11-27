@@ -5,6 +5,9 @@ namespace WfkSncSocialAuthDoctrineORM\Mapper;
 use Doctrine\ORM\EntityManager;
 use ScnSocialAuth\Mapper\UserProviderInterface;
 use WfkSncSocialAuthDoctrineORM\Options\ModuleOptions;
+use ScnSocialAuth\Entity\UserProvider as UserProviderEntity;
+use ZfcUser\Entity\UserInterface;
+use Hybrid_User_Profile;
 
 class UserProvider implements UserProviderInterface
 {
@@ -79,5 +82,34 @@ class UserProvider implements UserProviderInterface
     {
         $this->em->persist($entity);
         $this->em->flush();
+    }
+
+    /**
+     * @param UserInterface       $user
+     * @param Hybrid_User_Profile $hybridUserProfile
+     * @param string              $provider
+     * @param array               $accessToken
+     * @throws \ScnSocialAuth\Mapper\Exception\RuntimeException
+     * @return void
+     */
+    public function linkUserToProvider(UserInterface $user, Hybrid_User_Profile $hybridUserProfile, $provider, array $accessToken = null)
+    {
+        $userProvider = $this->findUserByProviderId($hybridUserProfile->identifier, $provider);
+
+        if (false != $userProvider) {
+            if ($user->getId() == $userProvider->getUserId()) {
+                // already linked
+                return;
+            }
+            throw new \ScnSocialAuth\Mapper\Exception\RuntimeException('This ' . ucfirst($provider) . ' profile is already linked to another user.');
+        }
+
+        /** @var $userProvider UserProviderEntity */
+        $userProvider = clone($this->getEntityPrototype());
+        $userProvider->setUserId($user->getId())
+            ->setProviderId($hybridUserProfile->identifier)
+            ->setProvider($provider);
+
+        $this->insert($userProvider);
     }
 }
