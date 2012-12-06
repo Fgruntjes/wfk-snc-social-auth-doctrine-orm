@@ -31,12 +31,15 @@ class Module implements ConfigProviderInterface, AutoloaderProviderInterface, Se
         return array(
             'aliases' => array(
                 'wfksncsocialauthdoctrineorm.entitymanager' => 'doctrine.entitymanager.orm_default',
+				'ScnSocialAuth_ZendDbAdapter' => (isset($settings['zend_db_adapter'])) ? $settings['zend_db_adapter']: 'Zend\Db\Adapter\Adapter',
+				'ScnSocialAuth_ZendSessionManager' => (isset($settings['zend_session_manager'])) ? $settings['zend_session_manager']: 'Zend\Session\SessionManager',
             ),
             'factories' => array(
                 'wfksncsocialauthdoctrineorm.module.options' => function ($sm) {
                     $config = $sm->get('Configuration');
                     return new Options\ModuleOptions(isset($config['wfksncsocialauthdoctrineorm']) ? $config['wfksncsocialauthdoctrineorm'] : array());
                 },
+				'Zend\Session\SessionManager' => 'Zend\Session\SessionManager',
             ),
         );
     }
