@@ -39,7 +39,6 @@ class Module implements ConfigProviderInterface, AutoloaderProviderInterface, Se
                     $config = $sm->get('Configuration');
                     return new Options\ModuleOptions(isset($config['wfksncsocialauthdoctrineorm']) ? $config['wfksncsocialauthdoctrineorm'] : array());
                 },
-				'Zend\Session\SessionManager' => 'Zend\Session\SessionManager',
             ),
         );
     }
