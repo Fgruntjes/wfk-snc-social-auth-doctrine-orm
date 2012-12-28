@@ -4,7 +4,7 @@
     "keywords": ["zf2", "doctrine"],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.3",
         "socalnick/scn-social-auth": "1.2.*",
         "zf-commons/zfc-user-doctrine-orm": "dev-master"
     },
