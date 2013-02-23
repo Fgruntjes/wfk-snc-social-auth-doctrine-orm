@@ -112,4 +112,43 @@ class UserProvider implements UserProviderInterface
 
         $this->insert($userProvider);
     }
+    
+    /**
+     * @param  UserInterface               $user
+     * @param  string                      $provider
+     * @return UserProviderInterface|false
+     */
+    public function findProviderByUser(UserInterface $user, $provider)
+    {
+        $select = $this->em->createQueryBuilder()
+            ->from($this->options->getUserProviderEntityClass(), 'e')
+            ->select('e')
+            ->andWhere('e.userId = ?1')
+            ->setParameter(1, $user->getId())
+            ->setMaxResults(1);
+
+        try
+        {
+            return $select->getQuery()->getSingleResult();
+        }
+        catch(\Doctrine\ORM\NoResultException $exception)
+        {
+            return null;
+        }
+    }
+
+    /**
+     * @param  UserInterface $user
+     * @return array
+     */
+    public function findProvidersByUser(UserInterface $user)
+    {
+        $select = $this->em->createQueryBuilder()
+            ->from($this->options->getUserProviderEntityClass(), 'e')
+            ->select('e.provider')
+            ->andWhere('e.userId = ?1')
+            ->setParameter(1, $user->getId());
+
+        return $select->getQuery()->getResult();
+    }
 }
